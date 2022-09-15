@@ -28,6 +28,7 @@ Store a value in the cache by key. You can also set how many seconds until it ex
  * expires. The return value will replace the current value for this cached item.
  * 
  * Note: seconds and refresh are not required. Their default value is false.
+ * 
  * Note: Alternatively, you can also pass in a single object with the object
  * parameters being key, value, seconds and refresh.
  */
@@ -111,10 +112,11 @@ Get a value from the cache by key. Values are returned the way they were stored.
  * refresh - the refresh function. Default: false
  * 
  * Note: full is not required. When left out, just the value will be returned.
+ * 
  * Note: if nothing is found, (boolean) false is returned.
  */
 
-/* Using the window.stash.set examples above... */
+/* Note: these are utilizing the window.stash.set examples above... */
 
 let value = window.stash.get('object-cache-key');
 /**
@@ -171,4 +173,57 @@ let value = window.stash.get('some-key', true).refresh();
 /**
  * Result: (string) 'new value'
  */
+```
+
+### window.stash.getElse(key, callback, full)
+The getElse function works like the get function when retrieving a value from the cache, but if the key does not exist (or expired) then call a function to return an alternate value.
+```js
+/**
+ * @param {string} key // the unique key for this entry in the cache.
+ * @param {function} callback // The function to return an alternate value.
+ * @param {boolean} full // If false, then only the value of the key is returned.
+ * If true then it will return the full cached object for this key - which includes:
+ * key - the key of the cahced object.
+ * value - the value of the cached objeect.
+ * type - the type for the stored value.
+ * expires - the date the cached object expires (as a unix timestamp). Default: 'no-expire'
+ * seconds - the seconds value from when the cached item was stored. Default: 'no-expire'
+ * refresh - the refresh function. Default: false
+ * 
+ * Note: the key is passed to your callback function. You could then
+ * set the value in the cache again by using window.stash.set().
+ * 
+ * Note: getElse returns a promise, so the function needs to be called within an
+ * asynchronous function using 'await' in order to return teh actual value and not
+ * another promise.
+ * 
+ * Note: do too the inconsistant behavior when calling .toString() on a function,
+ * it is best for your function not too use async->await and rather use .then() if
+ * it needs to await on a promise.
+ */
+
+/**
+ * Get a value stored in the cache under 'user-name'. If it doesn't exist, then return
+ * the value of the callback function.
+ */
+(async () => {
+    var newValue = await window.stash.getElse('user-name', (key) => {
+        return fetch("/some/api/you/have/setup")
+        .then(res => { return res.json() })
+        .then(data => { return data.username });
+    });
+    // do something with newValue
+    console.log(newValue);
+})();
+/* OR */
+const someFunction = async () => {
+    var newValue = await window.stash.getElse('user-name', (key) => {
+        return fetch("/some/api/you/have/setup")
+        .then(res => { return res.json() })
+        .then(data => { return data.username });
+    });
+    // do something with newValue
+    console.log(newValue);
+}
+someFunction();
 ```
