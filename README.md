@@ -176,7 +176,7 @@ let value = window.stash.get('some-key', true).refresh();
 ```
 
 ### window.stash.getElse(key, callback, full)
-The getElse function works like the get function when retrieving a value from the cache, but if the key does not exist (or expired) then call a function to return an alternate value.
+The getElse function works like the get function when retrieving a value from the cache, but if the key does not exist (or expired) then call a callback function to return an alternate value.
 ```js
 /**
  * @param {string} key // the unique key for this entry in the cache.
@@ -194,10 +194,10 @@ The getElse function works like the get function when retrieving a value from th
  * set the value in the cache again by using window.stash.set().
  * 
  * Note: getElse returns a promise, so the function needs to be called within an
- * asynchronous function using 'await' in order to return teh actual value and not
+ * asynchronous function using 'await' in order to return the actual value and not
  * another promise.
  * 
- * Note: do too the inconsistant behavior when calling .toString() on a function,
+ * Note: do to the inconsistant behavior when calling .toString() on a function,
  * it is best for your function not too use async->await and rather use .then() if
  * it needs to await on a promise.
  */
