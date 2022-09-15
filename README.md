@@ -175,6 +175,93 @@ let value = window.stash.get('some-key', true).refresh();
  */
 ```
 
+### window.stash.getAll(full)
+Get all values or objects from the cache.
+```js
+/**
+ * @param {boolean} full : boolean // // If false, then only the value of each key is returned.
+ * If true then it will return the full cached object for this key - which includes:
+ * key - the key of the cahced object.
+ * value - the value of the cached objeect.
+ * type - the type for the stored value.
+ * expires - the date the cached object expires (as a unix timestamp). Default: 'no-expire'
+ * seconds - the seconds value from when the cached item was stored. Default: 'no-expire'
+ * refresh - the refresh function. Default: false
+ * 
+ * Note: full is not required, it's false by default.
+ * 
+ * Note: This function returns an object of key => vakue pairs..
+ */
+
+/* Note: these are utilizing the window.stash.set examples above... */
+
+let cached = window.stash.getAll();
+/**
+ * Result: (object)
+ * { 
+ *     'your-key' : 'your value',
+ *     'object-cache-key' : {
+ *         prop1 : 'value 1',
+ *         prop2 : 'value 2'
+ *     },
+ *     'array-cache-key' : [
+ *         'value 1',
+ *         'value 2',
+ *         'value 3'
+ *     ],
+ *     'some-key' : 'new value'
+ * }
+ */
+
+let cached = window.stash.getAll(true);
+/**
+ * Result: (object)
+ * { 
+ *     'your-key' : {
+ *         key : 'your-key',
+ *         value : 'your value',
+ *         type : 'string',
+ *         expires : 1663265239,
+ *         seconds : 600,
+ *         refresh : false
+ *     },
+ *     'object-cache-key' : {
+ *         key : 'object-cache-key',
+ *         value : {
+ *             prop1 : 'value 1',
+ *             prop2 : 'value 2'
+ *         },
+ *         type : 'object',
+ *         expires : 'no-expire',
+ *         seconds : 'no-expire',
+ *         refresh : false
+ *     },
+ *     'array-cache-key' : {
+ *         key : 'array-cache-key',
+ *         value : [
+ *             'value 1',
+ *             'value 2',
+ *             'value 3'
+ *         ],
+ *         type : 'array',
+ *         expires : 1663265239,
+ *         seconds : 60,
+ *         refresh : false
+ *     },
+ *     'some-key' : {
+ *         key : 'some-key',
+ *         value : 'new value',
+ *         type : 'string',
+ *         expires : 1663265239,
+ *         seconds : 600,
+ *         refresh : () => {
+ *             return 'new value';
+ *         }
+ *     }
+ * }
+ */
+```
+
 ### window.stash.getElse(key, callback, full)
 The getElse function works like the get function when retrieving a value from the cache, but if the key does not exist (or expired) then call a callback function to return an alternate value.
 ```js
