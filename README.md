@@ -277,14 +277,14 @@ The getElse function works like the get function when retrieving a value from th
  * seconds - the seconds value from when the cached item was stored. Default: 'no-expire'
  * refresh - the refresh function. Default: false
  * 
- * Note: the key is passed to your callback function. You could then
+ * Note: The key is passed to your callback function. You could then
  * set the value in the cache again by using window.stash.set().
  * 
  * Note: getElse returns a promise, so the function needs to be called within an
  * asynchronous function using 'await' in order to return the actual value and not
  * another promise.
  * 
- * Note: do to the inconsistant behavior when calling .toString() on a function,
+ * Note: Do to the inconsistant behavior when calling .toString() on a function,
  * it is best for your function not too use async->await and rather use .then() if
  * it needs to await on a promise.
  */
@@ -313,4 +313,19 @@ const someFunction = async () => {
     console.log(newValue);
 }
 someFunction();
+```
+
+### window.stash.clear(key)
+Remove an entry from the cache by key.
+```js
+/**
+ * @param {string} key : // the unique key for this entry in the cache.
+ */
+window.stash.clear('your-key');
+```
+
+### window.stash.clearAll()
+Remove all entries from the cache
+```js
+window.stash.clearAll();
 ```
