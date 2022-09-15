@@ -124,7 +124,7 @@ let value = window.stash.get('object-cache-key');
  * }
  */
 
-let value = Cache.get('object-cache-key', true);
+let value = window.stash.get('object-cache-key', true);
 /**
  * Result: (object)
  * {
