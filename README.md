@@ -96,3 +96,47 @@ window.stash.set({
 });
 ```
 
+### window.stash.get(key, full)
+Get a value from the cache by key. Values are returned the way they were stored. If you stored an object then the object is returned, if you stored a function then the function is returned, etc.
+```js
+/**
+ * @param {string} key // the unique key for this entry in the cache.
+ * @param {boolean} full // If false, then only the value of the key is returned.
+ * If true then it will return the full cached object for this key - which includes:
+ * key - the key of the cahced object.
+ * value - the value of the cached objeect.
+ * type - the type for the stored value.
+ * expires - the date the cached object expires (as a unix timestamp).
+ * seconds - the seconds value from when the cached item was stored.
+ * refresh - the refresh function.
+ * 
+ * Note: full is not required. When left out, just the value will be returned.
+ * Note: if nothing is found, (boolean) false is returned.
+ */
+
+
+let value = window.stash.get('object-cache-key');
+/**
+ * Result: (object)
+ * {
+ *     prop1 : 'value 1',
+ *     prop2 : 'value 2'
+ * }
+ */
+
+let value = Cache.get('object-cache-key', true);
+/**
+ * Result: (object)
+ * {
+ *     key : 'object-cache-key',
+ *     value : {
+ *         prop1 : 'value 1',
+ *         prop2 : 'value 2'
+ *     },
+ *     type : 'object',
+ *     expires : 'no-expire',
+ *     seconds : 'no-expire',
+ *     refresh : false
+ * }
+ */
+```
