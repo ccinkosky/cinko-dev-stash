@@ -114,6 +114,7 @@ Get a value from the cache by key. Values are returned the way they were stored.
  * Note: if nothing is found, (boolean) false is returned.
  */
 
+/* Using the window.stash.set examples above... */
 
 let value = window.stash.get('object-cache-key');
 /**
@@ -138,5 +139,36 @@ let value = window.stash.get('object-cache-key', true);
  *     seconds : 'no-expire',
  *     refresh : false
  * }
+ */
+
+let value = window.stash.get('some-key');
+/**
+ * Result if less than 600 seconds since set: (string) 'old value'
+ * Result if more than 600 seconds since set: (string) 'new value'
+ */
+
+let value = window.stash.get('some-key', true);
+/**
+ * Result if less than 600 seconds since set: (object)
+ * {
+ *     key : 'some-key',
+ *     value : 'old value',
+ *     type : 'string',
+ *     expires : 1663265239,
+ *     seconds : 600,
+ *     refresh : () => {
+ *         return 'new value';
+ *     }
+ * }
+ */
+
+/**
+ * If you would like to get the result of the refresh function before
+ * the cached item expires, you can use window.stash.get with full = true
+ * and then call the refresh function like so:
+ */
+let value = window.stash.get('some-key', true).refresh();
+/**
+ * Result: (string) 'new value'
  */
 ```
