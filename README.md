@@ -106,9 +106,9 @@ Get a value from the cache by key. Values are returned the way they were stored.
  * key - the key of the cahced object.
  * value - the value of the cached objeect.
  * type - the type for the stored value.
- * expires - the date the cached object expires (as a unix timestamp).
- * seconds - the seconds value from when the cached item was stored.
- * refresh - the refresh function.
+ * expires - the date the cached object expires (as a unix timestamp). Default: 'no-expire'
+ * seconds - the seconds value from when the cached item was stored. Default: 'no-expire'
+ * refresh - the refresh function. Default: false
  * 
  * Note: full is not required. When left out, just the value will be returned.
  * Note: if nothing is found, (boolean) false is returned.
