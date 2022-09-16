@@ -1,26 +1,31 @@
 # @cinko-dev/stash
 A browser-based caching utility that utilizes and builds upon the browser's localStorage. With new features like a getElse function, cache expiration and automatic cache refresh.
 
-## Installation
+
+## NPM
+Install it...
 ```
 npm i @cinko-dev/stash
 ```
-
-## Usage
-
-### Import
+...then import it in your code:
 ```js
 import Stash from '@cinko-dev/stash';
 ```
-### Via CDN
-Add the &lt;script&gt; tag below to the &lt;head&gt; section of your website.
+
+
+## CDN
+Add the **&lt;script&gt;** tag below to the **&lt;head&gt;** section of your website.
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@cinko-dev/stash@1.1.1/Stash.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@cinko-dev/stash@1.1.3/Stash.js"></script>
 ```
 
 
 ### Initialize
-The Stash class uses static methods, so it does not need to be initialized. You can use **Stash** (Stash.set(...), Stash.get(...), etc) wherever you import the class, but just importing it once makes **window.stash** available throughout your application.
+The Stash class uses static methods, so it does not need to be initialized. You can use **Stash** (Stash.set(...), Stash.get(...), etc) wherever you import the class, or you could import it once and set **window.stash** equal to **Stash** like this:
+```js
+window.stash = Stash;
+```
+...then you can use it throughout the rest of your application.
 
 
 ### window.stash.set(key, value, seconds, refresh)
@@ -106,7 +111,6 @@ Get a value from the cache by key. Values are returned the way they were stored.
 
 - @param {string} key // the unique key for this entry in the cache.
 - @param {boolean} full // If false, then only the value of the key is returned. If true then it will return the full cached object for this key - which includes:
-
     - key - the key of the cahced object.
     - value - the value of the cached objeect.
     - type - the type for the stored value.
@@ -182,7 +186,6 @@ let value = window.stash.get('some-key', true).refresh();
 Get all values or objects from the cache.
 
 - @param {boolean} full // If false, then only the value of each key is returned. If true then it will return the full cached object for this key - which includes:
-
     - key - the key of the cahced object.
     - value - the value of the cached objeect.
     - type - the type for the stored value.
@@ -270,7 +273,6 @@ The getElse function works like the get function when retrieving a value from th
 - @param {string} key // the unique key for this entry in the cache.
 - @param {function} callback // The function to return an alternate value.
 - @param {boolean} full // If false, then only the value of the key is returned. If true then it will return the full cached object for this key - which includes:
-
     - key - the key of the cahced object.
     - value - the value of the cached objeect.
     - type - the type for the stored value.

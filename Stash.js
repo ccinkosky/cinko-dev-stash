@@ -25,7 +25,7 @@ SOFTWARE.
 
 class Stash {
     
-    static get key () { return '@cinko/stash' };
+    static get key () { return '@cinko-dev/stash' };
     static get sep () { return ']-[' };
     static get noExpire () { return 'no-expire' };
 
@@ -163,17 +163,24 @@ class Stash {
                 value = value.substring(10, value.length-2);
                 return (0, eval)("("+value+")");
             }
-            if (value != null && value._state && value._state._typeOf && value._state._typeOf == 'subscribables') {
+            if (value._state && value._state._typeOf && value._state._typeOf == 'subscribable') {
                 var reserved = value._state._reserved;
                 var callbacks = value._state._callbacks;
                 var newObject = {};
+                var nonStates = [];
                 Object.keys(value._state).forEach((prop) => {
                     if(!reserved.includes(prop)) {
-                        newObject[prop] = value._state[prop]._state;
+                        if (typeof value._state[prop]._state === 'undefined') {
+                            newObject[prop] = value._state[prop];
+                            nonStates.push(prop);
+                        } else {
+                            newObject[prop] = value._state[prop]._state;
+                        }
                     }
                 });
-                var sub = new Subscribables(newObject);
+                var sub = new Subscribable(newObject);
                 sub._state._callbacks = callbacks;
+                nonStates.forEach(prop => sub._state[prop] = sub._state[prop].state);
                 return sub;
             } else {
                 return value;
@@ -183,7 +190,6 @@ class Stash {
 }
 
 if (!window.stash_init) {
-    window.stash = Stash;
     setInterval(() => Stash.checkExpired(), 1000);
     window.stash_init = true;
 }
