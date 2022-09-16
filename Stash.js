@@ -1,10 +1,10 @@
 class Stash {
     
-    static key = '@cinko/stash';
-    static sep = ']-[';
-    static noExpire = 'no-expire';
+    static get key () { return '@cinko/stash' };
+    static get sep () { return ']-[' };
+    static get noExpire () { return 'no-expire' };
 
-    static set = (pkg, value = false, seconds = false, refresh = false) => {
+    static set (pkg, value = false, seconds = false, refresh = false) {
         if (typeof pkg === 'string') {
             pkg = {
                 key : pkg,
@@ -40,7 +40,7 @@ class Stash {
         localStorage.setItem(storageKey, storageString);
     }
 
-    static get = (key, full = false) => {
+    static get (key, full = false) {
         var returnValue = false;
         Object.keys(localStorage).forEach((existingKey) => {
             let keyData = existingKey.split(this.sep);
@@ -56,7 +56,7 @@ class Stash {
         return returnValue;
     }
 
-    static getAll = (full = false) => {
+    static getAll (full = false) {
         let cache = {};
         Object.keys(localStorage).forEach((existingKey) => {
             let keyData = existingKey.split(this.sep);
@@ -72,7 +72,7 @@ class Stash {
         return cache;
     }
 
-    static getElse = async (key, callback, full = false) => {
+    static async getElse (key, callback, full = false) {
         let data = this.get(key, full);
         if (data) {
             return data;
@@ -81,7 +81,7 @@ class Stash {
         }
     }
 
-    static clear = (key) => {
+    static clear (key) {
         Object.keys(localStorage).forEach((existingKey) => {
             let keyData = existingKey.split(this.sep);
             if (keyData[0] === this.key && keyData[2] === key) {
@@ -90,7 +90,7 @@ class Stash {
         });
     }
 
-    static clearAll = () => {
+    static clearAll () {
         Object.keys(localStorage).forEach((existingKey) => {
             let keyData = existingKey.split(this.sep);
             if (keyData[0] === this.key) {
@@ -99,7 +99,7 @@ class Stash {
         });
     }
 
-    static checkExpired = () => {
+    static checkExpired () {
         Object.keys(localStorage).forEach((existingKey) => {
             let keyData = existingKey.split(this.sep);
             if (keyData[0] === this.key) {
@@ -123,7 +123,7 @@ class Stash {
         });
     }
 
-    static jsonStringify = (object) => {
+    static jsonStringify (object) {
         return JSON.stringify(object, (key, value) => {
             if (typeof value === "function") {
                 return "/Function("+value.toString()+")/";
@@ -132,13 +132,13 @@ class Stash {
         });
     }
     
-    static jsonParse = (json) => {
+    static jsonParse (json) {
         return JSON.parse(json, (key, value) => {
             if (typeof value === "string" && value.startsWith("/Function(") && value.endsWith(")/")) {
                 value = value.substring(10, value.length-2);
                 return (0, eval)("("+value+")");
             }
-            if (value._state && value._state._typeOf && value._state._typeOf == 'subscribables') {
+            if (value != null && value._state && value._state._typeOf && value._state._typeOf == 'subscribables') {
                 var reserved = value._state._reserved;
                 var callbacks = value._state._callbacks;
                 var newObject = {};

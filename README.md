@@ -3,7 +3,7 @@ A browser-based caching utility that utilizes and builds upon the browser's loca
 
 ## Installation
 ```
-npm install @cinko-dev/stash
+npm i @cinko-dev/stash
 ```
 
 ## Usage
@@ -12,9 +12,14 @@ npm install @cinko-dev/stash
 ```js
 import Stash from '@cinko-dev/stash';
 ```
+### Via CDN
+Add the &lt;script&gt; tag below to the &lt;head&gt; section of your website.
+```html
+<script src="https://cdn.jsdelivr.net/npm/@cinko-dev/stash@1.1.0/Stash.js"></script>
+```
 
 ### Initialize
-The Stash class uses static methods, so it does not need to be initialized. After importing, **window.stash** will become available for you to use.
+The Stash class uses static methods, so it does not need to be initialized. You can use **Stash** (Stash.set(...), Stash.get(...), etc) wherever you import the class, but just importing it once makes **window.stash** available throughout your application.
 
 ### window.stash.set(key, value, seconds, refresh)
 Store a value in the cache by key. You can also set how many seconds until it expires as well as a refresh function to automatically set a new value when it expires.
