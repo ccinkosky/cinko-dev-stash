@@ -1,6 +1,7 @@
 # @cinko-dev/stash
 A browser-based caching utility that utilizes and builds upon the browser's localStorage. With new features like a getElse function, cache expiration and automatic cache refresh.
 
+<style>b{color:red;}</style>
 
 ## NPM
 Install it...
