@@ -1,7 +1,6 @@
 # @cinko-dev/stash
 A browser-based caching utility that utilizes and builds upon the browser's localStorage. With new features like a getElse function, cache expiration and automatic cache refresh.
 
-<style>b{color:red;}</style>
 
 ## NPM
 Install it...
@@ -15,14 +14,14 @@ import Stash from '@cinko-dev/stash';
 
 
 ## CDN
-Add the `<script>`{:.language-html} tag below to the **&lt;head&gt;** section of your website.
+Add the `<script>` tag below to the `<head>` section of your website.
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@cinko-dev/stash@1.1.3/Stash.js"></script>
 ```
 
 
 ### Initialize
-The Stash class uses static methods, so it does not need to be initialized. You can use **Stash** (Stash.set(...), Stash.get(...), etc) wherever you import the class, or you could import it once and set **window.stash** equal to **Stash** like this:
+The Stash class uses static methods, so it does not need to be initialized. You can use `Stash.set(...)`, `Stash.get(...)`, `Stash.clear(...)`, etc. wherever you import the class, or you could import it once and set `window.stash` equal to `Stash` like this:
 ```js
 window.stash = Stash;
 ```
@@ -32,7 +31,7 @@ window.stash = Stash;
 ### window.stash.set(key, value, seconds, refresh)
 Store a value in the cache by key. You can also set how many seconds until it expires as well as a refresh function to automatically set a new value when it expires.
 
-- @param {string} key // The unique key for this entry in the cache.
+- `@param {string} key // The unique key for this entry in the cache.`
 - @param {*} value // Function, object, string, array, etc. This is the value to be stored in the cache.
 - @param {integer} seconds // The time in seconds until the cache entry expires.
 - @param {function} refresh // This function will be called when the cached item expires. The return value will replace the current value for this cached item.
