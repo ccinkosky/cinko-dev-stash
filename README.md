@@ -26,10 +26,10 @@ The Stash class uses static methods, so it does not need to be initialized. You 
 ### window.stash.set(key, value, seconds, refresh)
 Store a value in the cache by key. You can also set how many seconds until it expires as well as a refresh function to automatically set a new value when it expires.
 
-@param {string} key // The unique key for this entry in the cache.
-@param {*} value // Function, object, string, array, etc. This is the value to be stored in the cache.
-@param {integer} seconds // The time in seconds until the cache entry expires.
-@param {function} refresh // This function will be called when the cached item expires. The return value will replace the current value for this cached item.
+- @param {string} key // The unique key for this entry in the cache.
+- @param {*} value // Function, object, string, array, etc. This is the value to be stored in the cache.
+- @param {integer} seconds // The time in seconds until the cache entry expires.
+- @param {function} refresh // This function will be called when the cached item expires. The return value will replace the current value for this cached item.
 
 Note: seconds and refresh are not required. Their default value is false.
 
@@ -104,15 +104,15 @@ window.stash.set({
 ### window.stash.get(key, full)
 Get a value from the cache by key. Values are returned the way they were stored. If you stored an object then the object is returned, if you stored a function then the function is returned, etc.
 
-@param {string} key // the unique key for this entry in the cache.
-@param {boolean} full // If false, then only the value of the key is returned. If true then it will return the full cached object for this key - which includes:
+- @param {string} key // the unique key for this entry in the cache.
+- @param {boolean} full // If false, then only the value of the key is returned. If true then it will return the full cached object for this key - which includes:
 
-key - the key of the cahced object.
-value - the value of the cached objeect.
-type - the type for the stored value.
-expires - the date the cached object expires (as a unix timestamp). Default: 'no-expire'
-seconds - the seconds value from when the cached item was stored. Default: 'no-expire'
-refresh - the refresh function. Default: false
+    - key - the key of the cahced object.
+    - value - the value of the cached objeect.
+    - type - the type for the stored value.
+    - expires - the date the cached object expires (as a unix timestamp). Default: 'no-expire'
+    - seconds - the seconds value from when the cached item was stored. Default: 'no-expire'
+    - refresh - the refresh function. Default: false
 
 Note: full is not required. When left out, just the value will be returned.
 
@@ -181,14 +181,14 @@ let value = window.stash.get('some-key', true).refresh();
 ### window.stash.getAll(full)
 Get all values or objects from the cache.
 
-@param {boolean} full // If false, then only the value of each key is returned. If true then it will return the full cached object for this key - which includes:
+- @param {boolean} full // If false, then only the value of each key is returned. If true then it will return the full cached object for this key - which includes:
 
-key - the key of the cahced object.
-value - the value of the cached objeect.
-type - the type for the stored value.
-expires - the date the cached object expires (as a unix timestamp). Default: 'no-expire'
-seconds - the seconds value from when the cached item was stored. Default: 'no-expire'
-refresh - the refresh function. Default: false
+    - key - the key of the cahced object.
+    - value - the value of the cached objeect.
+    - type - the type for the stored value.
+    - expires - the date the cached object expires (as a unix timestamp). Default: 'no-expire'
+    - seconds - the seconds value from when the cached item was stored. Default: 'no-expire'
+    - refresh - the refresh function. Default: false
 
 Note: full is not required, it's false by default.
 
@@ -267,16 +267,16 @@ let cached = window.stash.getAll(true);
 ### window.stash.getElse(key, callback, full)
 The getElse function works like the get function when retrieving a value from the cache, but if the key does not exist (or expired) then call a callback function to return an alternate value.
 
-@param {string} key // the unique key for this entry in the cache.
-@param {function} callback // The function to return an alternate value.
-@param {boolean} full // If false, then only the value of the key is returned. If true then it will return the full cached object for this key - which includes:
+- @param {string} key // the unique key for this entry in the cache.
+- @param {function} callback // The function to return an alternate value.
+- @param {boolean} full // If false, then only the value of the key is returned. If true then it will return the full cached object for this key - which includes:
 
-key - the key of the cahced object.
-value - the value of the cached objeect.
-type - the type for the stored value.
-expires - the date the cached object expires (as a unix timestamp). Default: 'no-expire'
-seconds - the seconds value from when the cached item was stored. Default: 'no-expire'
-refresh - the refresh function. Default: false
+    - key - the key of the cahced object.
+    - value - the value of the cached objeect.
+    - type - the type for the stored value.
+    - expires - the date the cached object expires (as a unix timestamp). Default: 'no-expire'
+    - seconds - the seconds value from when the cached item was stored. Default: 'no-expire'
+    - refresh - the refresh function. Default: false
 
 Note: The key is passed to your callback function. You could then set the value in the cache again by using window.stash.set().
 
@@ -315,7 +315,7 @@ someFunction();
 ### window.stash.clear(key)
 Remove an entry from the cache by key.
 
-@param {string} key // the unique key for this entry in the cache.
+- @param {string} key // the unique key for this entry in the cache.
 ```js
 window.stash.clear('your-key');
 ```
