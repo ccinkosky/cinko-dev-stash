@@ -14,7 +14,7 @@ import Stash from '@cinko-dev/stash';
 
 
 ## CDN
-Add the **&lt;script&gt;** tag below to the **&lt;head&gt;** section of your website.
+Add the `<script>`{:.html} tag below to the **&lt;head&gt;** section of your website.
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@cinko-dev/stash@1.1.3/Stash.js"></script>
 ```
