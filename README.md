@@ -193,6 +193,7 @@ class Stock extends React.Component {
 export default Stock;
 ```
 
+&nbsp;
 
 # Documentation
 
@@ -208,6 +209,10 @@ Store a value in the cache by key. You can also set how many seconds until it ex
 Note: seconds and refresh are not required. Their default value is false.
 
 Note: Alternatively, you can also pass in a single object with the object parameters being key, value, seconds, refreshProps and refresh.
+
+Note: Do to inconsitancies when calling .toString() on a function, it is best not to use asynchronous functions as the refresh function. For example, if you were considering using async->await with a fetch, you'd likely be better served using the `fetch().then()` method. 
+
+Note: The refresh function is generally called out of scope from where it was declared. Because of this there are a few additional quirks about working with the refresh function. The refresh function cannot be bound via `bind()` to anything. Unless imported again within the function, `Stash` is not available in the refresh function. However, if you use the `window.stash` method, you're good. Lastly, a single property is passed into the refresh function, you can determine what property is passed into the refresh function by setting the refreshProps parameter in `Stash.set()`. You can pass a string, integer, array, etc. If you need to pass in more than one property, pass in an object of properties.
 ```js
 /**
  * Store a string for 5 minutes (300 seconds) 
