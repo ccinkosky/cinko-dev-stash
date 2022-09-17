@@ -52,7 +52,9 @@ class Stock extends React.Component {
                 borderRadius : '6px',
                 padding : '15px'
             }}>
-                
+                <div>{ this.state.name }</div>
+                <div style={{ fontSize : '18px' }}><b>{ this.state.symbol }</b></div>
+                <div style={{ fontSize : '24px' }}><b>{ this.state.price }</b></div>
             </div>
         )
     }
