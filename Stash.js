@@ -29,13 +29,14 @@ class Stash {
     static get sep () { return ']-[' };
     static get noExpire () { return 'no-expire' };
 
-    static set (pkg, value = false, seconds = false, refresh = false) {
+    static set (pkg, value = false, seconds = false, refreshProps = false, refresh = false) {
         if (typeof pkg === 'string') {
             pkg = {
                 key : pkg,
                 value : value,
                 seconds : seconds ? seconds : this.noExpire,
-                refresh : typeof refresh === 'function' ? refresh : false
+                refresh : typeof refresh === 'function' ? refresh : false,
+                refreshProps : refreshProps
             }
         } else {
             typeof pkg.refresh !== 'function' ? pkg.refresh = false : '';
@@ -54,7 +55,8 @@ class Stash {
             value : pkg.value,
             type : typeof pkg.value,
             seconds : pkg.seconds,
-            refresh : pkg.refresh
+            refresh : pkg.refresh,
+            refreshProps : pkg.refreshProps
         };
         let storageExpire = pkg.seconds === this.noExpire ? pkg.seconds : Math.floor(Date.now()/1000)+(pkg.seconds);
         storageObject.expires = storageExpire;
@@ -137,7 +139,7 @@ class Stash {
                         (async () => {
                             this.set({
                                 key : keyData[2],
-                                value : await existing.refresh(),
+                                value : await existing.refresh(existing.refreshProps),
                                 seconds : existing.seconds,
                                 refresh : existing.refresh
                             });

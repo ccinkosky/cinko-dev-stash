@@ -28,6 +28,11 @@ window.stash = Stash;
 
 ## Practical Examples
 Create a React component to display a stock's general information with an update button - that when clicked, will update the stock's information. Use `Stash` to cache the data. The cached data is considered expired after 5 minutes.
+
+### Example 1 - Using Stash.getElse()
+This example creates a simple stock component that takes a 'symbol' property containing one stock symbol (this mock api can take AMZN or MSFT). When you click "Update!", it fires the `fetchData()` function which will use `Stash.getElse()` to check the cache for a specific key - `'stock-data-'+this.props.symbol`. If data is found in the cache for the given key, then it will return the value from the cache. If the key does not exist in the cache (or it has expired), then it will fire the 'else' callback function to fetch an alternate value. In this case, within the 'else' callback function we also use `Stash.set()` to store the newly fetched data in the cache for the given key for 300 seconds (5 minutes). We then return the data and set the state - which updates the view.
+
+The next time "Update!" is clicked, if it's been less than 300 seconds (5 miniutes), then the data returned will come from the cache. Otherwise it will refetch the data from the mock api.
 ```jsx
 import React from 'react';
 import Stash from '@cinko-dev/stash';
@@ -97,6 +102,99 @@ export default Stock;
 ```
 
 
+### Example 2 - Using Stash.set() with a refresh function
+This example creates a simple stock component that takes a 'symbol' property containing one stock symbol (this mock api can take AMZN or MSFT). After the component has loaded we fetch the inital stock value and then we use `Stash.set()` with a refresh function to set the initial value in the cache. The refresh function will fire automatically whenever the cached item expires and then updates the value stored in the cache for that given key - this way, the value in the cache automatically keeps itself up to date - whether you interact with it or not. When you click "Update!", it fires the `fetchData()` function which will use `Stash.get()` to check the cache for the given key - `'stock-data-'+this.props.symbol`. We then return the data and set the state - which updates the view.
+
+The next time "Update!" is clicked, we just use `Stash.get()` to check the cache again - since the cache keeps itself up to date behind the scenes.
+```jsx
+import React from 'react';
+import Stash from '@cinko-dev/stash';
+
+class Stock extends React.Component {
+
+    constructor (props) {
+        super(props);
+        this.fetchData = this.fetchData.bind(this);
+        this.state = { 
+            symbol : this.props.symbol ?? 'AMZN',
+            name : "",
+            price : 0.0
+        }
+    }
+
+    async componentDidMount () {
+        let stockKey = 'stock-data-'+this.props.symbol;
+        const stock = await fetch("https://my-json-server.typicode.com/ccinkosky/cinko-dev-stash/"+this.props.symbol)
+        .then(res => { return res.json() })
+        .then(data => { return data });
+        this.setState({
+            symbol : stock.symbol,
+            name : stock.name,
+            price : stock.price
+        });
+        Stash.set({
+            key : stockKey,
+            value : data,
+            seconds : 300,
+            refreshProps : this.props.symbol,
+            refresh : ((symbol) => {
+                const stock = fetch("https://my-json-server.typicode.com/ccinkosky/cinko-dev-stash/"+symbol)
+                .then(res => { return res.json() })
+                .then(data => { return data });
+                return stock;
+            })
+        });
+    }
+
+    fetchData () {
+        let stockKey = 'stock-data-'+this.props.symbol;
+        const data = Stash.get(stockKey);
+        this.setState({
+            symbol : data.symbol,
+            name : data.name,
+            price : data.price
+        });
+    }
+
+    render () {
+        return (
+            <>
+            <div style={{
+                color : '#888',
+                backgroundColor : '#FFF',
+                border : '2px solid #888',
+                borderRadius : '6px',
+                margin : '15px',
+                padding : '15px',
+                maxWidth : '200px'
+            }}>
+                <div>{ this.state.name }</div>
+                <div style={{ fontSize : '18px' }}><b>{ this.state.symbol }</b></div>
+                <div style={{ fontSize : '24px' }}><b>{ this.state.price }</b></div>
+            </div>
+            <div onClick={ this.fetchData }
+                style={{
+                    color : '#FFF',
+                    backgroundColor : '#888',
+                    borderRadius : '6px',
+                    margin : '15px',
+                    padding : '10px',
+                    cursor : 'pointer',
+                    textAlign : 'center',
+                    maxWidth : '200px'
+                }}>
+                Update!
+            </div>
+            </>
+        )
+    }
+}
+
+export default Stock;
+```
+
+
+# Documentation
 
 ## window.stash.set(key, value, seconds, refresh)
 Store a value in the cache by key. You can also set how many seconds until it expires as well as a refresh function to automatically set a new value when it expires.
@@ -104,11 +202,12 @@ Store a value in the cache by key. You can also set how many seconds until it ex
 - @param {string} **key** - The unique key for this entry in the cache.
 - @param {*} **value** - Function, object, string, array, etc. This is the value to be stored in the cache.
 - @param {integer} **seconds** - The time in seconds until the cache entry expires.
+- @param {*} **refreshProps** - Any kind of prop you want passed into your refresh function.
 - @param {function} **refresh** - This function will be called when the cached item expires. The return value will replace the current value for this cached item.
 
 Note: seconds and refresh are not required. Their default value is false.
 
-Note: Alternatively, you can also pass in a single object with the object parameters being key, value, seconds and refresh.
+Note: Alternatively, you can also pass in a single object with the object parameters being key, value, seconds, refreshProps and refresh.
 ```js
 /**
  * Store a string for 5 minutes (300 seconds) 
@@ -158,10 +257,10 @@ window.stash.set({
 
 /**
  * Store a string for 10 minutes (600 seconds) with a refresh
- * function that willvset a new value whenever the cached item
+ * function that will set a new value whenever the cached item
  * expires. 
  */
-window.stash.set('some-key', 'old value', 600, () => {
+window.stash.set('some-key', 'old value', 600, 'this has', () => {
     return 'new value';
 });
 /* OR */
@@ -169,8 +268,9 @@ window.stash.set({
     key: 'some-key',
     value: 'old value',
     seconds: 600,
-    refresh: () => {
-        return 'new value';
+    refreshProps: 'this has',
+    refresh: (prop) => {
+        return prop+' a new value';
     }
 });
 ```
@@ -238,16 +338,6 @@ let value = window.stash.get('some-key', true);
  *         return 'new value';
  *     }
  * }
- */
-
-/**
- * If you would like to get the result of the refresh function before
- * the cached item expires, you can use window.stash.get with full = true
- * and then call the refresh function like so:
- */
-let value = window.stash.get('some-key', true).refresh();
-/**
- * Result: (string) 'new value'
  */
 ```
 
