@@ -1,7 +1,6 @@
 # @cinko-dev/stash
 A browser-based caching utility that utilizes and builds upon the browser's localStorage. With new features like a getElse function, cache expiration and automatic cache refresh.
 
-
 ## NPM
 Install it...
 ```
@@ -20,15 +19,51 @@ Add the `<script>` tag below to the `<head>` section of your website.
 ```
 
 
-### Initialize
+## Initialize
 The Stash class uses static methods, so it does not need to be initialized. You can use `Stash.set(...)`, `Stash.get(...)`, `Stash.clear(...)`, etc. wherever you import the class, or you could import it once and set `window.stash` equal to `Stash` like this:
 ```js
 window.stash = Stash;
 ```
 ...then you can use it throughout the rest of your application.
 
+## Practical Examples
+Create a React component to display a stock's general information with an update button - that when clicked, will update the stock's information. Use `Stash` to cache the data. The cached data is considered expired after 5 minutes.
+```jsx
+import React from 'react';
+import Stash from '@cinko-dev/stash';
 
-### window.stash.set(key, value, seconds, refresh)
+class Stock extends React.Component {
+
+    constructor (props) {
+        super(props);
+        this.state = { 
+            symbol : props.symbol,
+            name : "",
+            price : 0.0
+        }
+    }
+
+    render () {
+        return (
+            <div style={{
+                color : '#888',
+                backgroundColor : '#FFF',
+                border : '2px solid #888',
+                borderRadius : '6px',
+                padding : '15px'
+            }}>
+                
+            </div>
+        )
+    }
+}
+
+export default Stock;
+```
+
+
+
+## window.stash.set(key, value, seconds, refresh)
 Store a value in the cache by key. You can also set how many seconds until it expires as well as a refresh function to automatically set a new value when it expires.
 
 - @param {string} **key** - The unique key for this entry in the cache.
@@ -106,7 +141,7 @@ window.stash.set({
 ```
 
 
-### window.stash.get(key, full)
+## window.stash.get(key, full)
 Get a value from the cache by key. Values are returned the way they were stored. If you stored an object then the object is returned, if you stored a function then the function is returned, etc.
 
 - @param {string} **key** - the unique key for this entry in the cache.
@@ -182,7 +217,7 @@ let value = window.stash.get('some-key', true).refresh();
 ```
 
 
-### window.stash.getAll(full)
+## window.stash.getAll(full)
 Get all values or objects from the cache.
 
 - @param {boolean} **full** - If false, then only the value of each key is returned. If true then it will return the full cached object for this key - which includes:
@@ -267,7 +302,7 @@ let cached = window.stash.getAll(true);
 ```
 
 
-### window.stash.getElse(key, callback, full)
+## window.stash.getElse(key, callback, full)
 The getElse function works like the get function when retrieving a value from the cache, but if the key does not exist (or expired) then call a callback function to return an alternate value.
 
 - @param {string} **key** - the unique key for this entry in the cache.
@@ -283,8 +318,6 @@ The getElse function works like the get function when retrieving a value from th
 Note: The key is passed to your callback function. You could then set the value in the cache again by using window.stash.set().
 
 Note: getElse returns a promise, so the function needs to be called within an asynchronous function using 'await' in order to return the actual value and not another promise.
-
-Note: Do to the inconsistant behavior when calling .toString() on a function, it is best for your function not too use async->await and rather use .then() if it needs to await on a promise.
 ```js
 /**
  * Get a value stored in the cache under 'user-name'. If it doesn't
@@ -314,7 +347,7 @@ const someFunction = async () => {
 someFunction();
 ```
 
-### window.stash.clear(key)
+## window.stash.clear(key)
 Remove an entry from the cache by key.
 
 - @param {string} **key** - the unique key for this entry in the cache.
@@ -322,7 +355,7 @@ Remove an entry from the cache by key.
 window.stash.clear('your-key');
 ```
 
-### window.stash.clearAll()
+## window.stash.clearAll()
 Remove all entries from the cache.
 ```js
 window.stash.clearAll();
