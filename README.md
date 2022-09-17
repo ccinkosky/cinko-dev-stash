@@ -296,7 +296,7 @@ Note: Do to the inconsistant behavior when calling .toString() on a function, it
         .then(res => { return res.json() })
         .then(data => { return data.username });
     });
-    - do something with newValue
+    // do something with newValue
     console.log(newValue);
 })();
 
@@ -308,7 +308,7 @@ const someFunction = async () => {
         .then(res => { return res.json() })
         .then(data => { return data.username });
     });
-    - do something with newValue
+    // do something with newValue
     console.log(newValue);
 }
 someFunction();
