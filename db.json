@@ -1,5 +1,9 @@
 {
-    "symbol" : "AMZN",
-    "name" : "Amazon.com, Inc.",
-    "price" : 123.53
+    "stocks" : [
+        {
+            "symbol" : "AMZN",
+            "name" : "Amazon.com, Inc.",
+            "price" : 123.53
+        }
+    ]
 }
