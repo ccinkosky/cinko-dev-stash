@@ -36,26 +36,59 @@ class Stock extends React.Component {
 
     constructor (props) {
         super(props);
+        this.fetchData = this.fetchData.bind(this);
         this.state = { 
-            symbol : props.symbol,
+            symbol : this.props.symbol ?? 'AMZN',
             name : "",
             price : 0.0
         }
     }
 
+    async fetchData () {
+        let stockKey = 'stock-data-'+this.props.symbol;
+        const data = await Stash.getElse(stockKey, async (key) => {
+            const res = await fetch("https://my-json-server.typicode.com/ccinkosky/cinko-dev-stash/"+this.props.symbol);
+            const data = await res.json();
+            Stash.set(key, data, 300);
+            return data;
+        });
+        this.setState({
+            symbol : data.symbol,
+            name : data.name,
+            price : data.price
+        });
+    }
+
     render () {
         return (
+            <>
             <div style={{
                 color : '#888',
                 backgroundColor : '#FFF',
                 border : '2px solid #888',
                 borderRadius : '6px',
-                padding : '15px'
+                margin : '15px',
+                padding : '15px',
+                maxWidth : '200px'
             }}>
                 <div>{ this.state.name }</div>
                 <div style={{ fontSize : '18px' }}><b>{ this.state.symbol }</b></div>
                 <div style={{ fontSize : '24px' }}><b>{ this.state.price }</b></div>
             </div>
+            <div onClick={ this.fetchData }
+                style={{
+                    color : '#FFF',
+                    backgroundColor : '#888',
+                    borderRadius : '6px',
+                    margin : '15px',
+                    padding : '10px',
+                    cursor : 'pointer',
+                    textAlign : 'center',
+                    maxWidth : '200px'
+                }}>
+                Update!
+            </div>
+            </>
         )
     }
 }
