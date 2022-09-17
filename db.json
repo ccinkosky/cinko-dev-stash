@@ -4,7 +4,6 @@
         "name" : "Amazon.com, Inc.",
         "price" : 123.53
     },
-
     "MSFT" : {
         "symbol" : "MSFT",
         "name" : "Microsoft Corporation",
