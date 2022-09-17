@@ -1,6 +1,8 @@
 # @cinko-dev/stash
 A browser-based caching utility that utilizes and builds upon the browser's localStorage. With new features like a getElse function, cache expiration and automatic cache refresh.
 
+&nbsp;
+
 ## NPM
 Install it...
 ```
@@ -11,6 +13,7 @@ npm i @cinko-dev/stash
 import Stash from '@cinko-dev/stash';
 ```
 
+&nbsp;
 
 ## CDN
 Add the `<script>` tag below to the `<head>` section of your website.
@@ -18,6 +21,7 @@ Add the `<script>` tag below to the `<head>` section of your website.
 <script src="https://cdn.jsdelivr.net/npm/@cinko-dev/stash@1.1.3/Stash.js"></script>
 ```
 
+&nbsp;
 
 ## Initialize
 The Stash class uses static methods, so it does not need to be initialized. You can use `Stash.set(...)`, `Stash.get(...)`, `Stash.clear(...)`, etc. wherever you import the class, or you could import it once and set `window.stash` equal to `Stash` like this:
@@ -25,6 +29,8 @@ The Stash class uses static methods, so it does not need to be initialized. You 
 window.stash = Stash;
 ```
 ...then you can use it throughout the rest of your application.
+
+&nbsp;
 
 ## Practical Examples
 Create a React component to display a stock's general information with an update button - that when clicked, will update the stock's information. Use `Stash` to cache the data. The cached data is considered expired after 5 minutes.
@@ -280,6 +286,7 @@ window.stash.set({
 });
 ```
 
+&nbsp;
 
 ## window.stash.get(key, full)
 Get a value from the cache by key. Values are returned the way they were stored. If you stored an object then the object is returned, if you stored a function then the function is returned, etc.
@@ -346,6 +353,7 @@ let value = window.stash.get('some-key', true);
  */
 ```
 
+&nbsp;
 
 ## window.stash.getAll(full)
 Get all values or objects from the cache.
@@ -431,6 +439,7 @@ let cached = window.stash.getAll(true);
  */
 ```
 
+&nbsp;
 
 ## window.stash.getElse(key, callback, full)
 The getElse function works like the get function when retrieving a value from the cache, but if the key does not exist (or expired) then call a callback function to return an alternate value.
@@ -477,6 +486,8 @@ const someFunction = async () => {
 someFunction();
 ```
 
+&nbsp;
+
 ## window.stash.clear(key)
 Remove an entry from the cache by key.
 
@@ -484,6 +495,8 @@ Remove an entry from the cache by key.
 ```js
 window.stash.clear('your-key');
 ```
+
+&nbsp;
 
 ## window.stash.clearAll()
 Remove all entries from the cache.
