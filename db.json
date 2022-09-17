@@ -1,9 +1,13 @@
 {
-    "AMZN" : [
-        {
-            "symbol" : "AMZN",
-            "name" : "Amazon.com, Inc.",
-            "price" : 123.53
-        }
-    ]
+    "AMZN" : {
+        "symbol" : "AMZN",
+        "name" : "Amazon.com, Inc.",
+        "price" : 123.53
+    },
+
+    "MSFT" : {
+        "symbol" : "MSFT",
+        "name" : "Microsoft Corporation",
+        "price" : 244.74
+    }
 }
