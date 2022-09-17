@@ -28,7 +28,7 @@ The Stash class uses static methods, so it does not need to be initialized. You 
 ```js
 window.stash = Stash;
 ```
-...then you can use it throughout the rest of your application.
+...then you can use it throughout the rest of your application without additional imports.
 
 &nbsp;
 
@@ -203,7 +203,7 @@ export default Stock;
 
 # Documentation
 
-## window.stash.set(key, value, seconds, refresh)
+## Stash.set(key, value, seconds, refresh)
 Store a value in the cache by key. You can also set how many seconds until it expires as well as a refresh function to automatically set a new value when it expires.
 
 - @param {string} **key** - The unique key for this entry in the cache.
@@ -223,9 +223,9 @@ Note: The refresh function is generally called out of scope from where it was de
 /**
  * Store a string for 5 minutes (300 seconds) 
  */
-window.stash.set('your-key', 'your value', 300);
+Stash.set('your-key', 'your value', 300);
 /* OR */
-window.stash.set({
+Stash.set({
     key: 'your-key',
     value: 'your value',
     seconds: 300
@@ -234,12 +234,12 @@ window.stash.set({
 /**
  * Store an object until cleared 
  */
-window.stash.set('object-cache-key', {
+Stash.set('object-cache-key', {
     prop1 : 'value 1',
     prop2 : 'value 2'
 });
 /* OR */
-window.stash.set({
+Stash.set({
     key: 'object-cache-key',
     value: {
         prop1 : 'value 1',
@@ -250,13 +250,13 @@ window.stash.set({
 /**
  * Store an array for 1 minute (60 seconds)
  */
-window.stash.set('array-cache-key', [
+Stash.set('array-cache-key', [
     'value 1',
     'value 2',
     'value 3'
 ], 60);
 /* OR */
-window.stash.set({
+Stash.set({
     key: 'array-cache-key',
     value: [
         'value 1',
@@ -271,11 +271,11 @@ window.stash.set({
  * function that will set a new value whenever the cached item
  * expires. 
  */
-window.stash.set('some-key', 'old value', 600, 'this has', () => {
+Stash.set('some-key', 'old value', 600, 'this has', () => {
     return 'new value';
 });
 /* OR */
-window.stash.set({
+Stash.set({
     key: 'some-key',
     value: 'old value',
     seconds: 600,
@@ -288,7 +288,7 @@ window.stash.set({
 
 &nbsp;
 
-## window.stash.get(key, full)
+## Stash.get(key, full)
 Get a value from the cache by key. Values are returned the way they were stored. If you stored an object then the object is returned, if you stored a function then the function is returned, etc.
 
 - @param {string} **key** - the unique key for this entry in the cache.
@@ -304,9 +304,9 @@ Note: full is not required. When left out, just the value will be returned.
 
 Note: if nothing is found, (boolean) false is returned.
 ```js
-/* These are utilizing the window.stash.set examples above... */
+/* These are utilizing the Stash.set examples above... */
 
-let value = window.stash.get('object-cache-key');
+let value = Stash.get('object-cache-key');
 /**
  * Result: (object)
  * {
@@ -315,7 +315,7 @@ let value = window.stash.get('object-cache-key');
  * }
  */
 
-let value = window.stash.get('object-cache-key', true);
+let value = Stash.get('object-cache-key', true);
 /**
  * Result: (object)
  * {
@@ -331,13 +331,13 @@ let value = window.stash.get('object-cache-key', true);
  * }
  */
 
-let value = window.stash.get('some-key');
+let value = Stash.get('some-key');
 /**
  * Result if less than 600 seconds since set: (string) 'old value'
  * Result if more than 600 seconds since set: (string) 'new value'
  */
 
-let value = window.stash.get('some-key', true);
+let value = Stash.get('some-key', true);
 /**
  * Result if less than 600 seconds since set: (object)
  * {
@@ -355,7 +355,7 @@ let value = window.stash.get('some-key', true);
 
 &nbsp;
 
-## window.stash.getAll(full)
+## Stash.getAll(full)
 Get all values or objects from the cache.
 
 - @param {boolean} **full** - If false, then only the value of each key is returned. If true then it will return the full cached object for this key - which includes:
@@ -370,9 +370,9 @@ Note: full is not required, it's false by default.
 
 Note: This function returns an object of key => vakue pairs.
 ```js
-/* These are utilizing the window.stash.set examples above... */
+/* These are utilizing the Stash.set examples above... */
 
-let cached = window.stash.getAll();
+let cached = Stash.getAll();
 /**
  * Result: (object)
  * { 
@@ -390,7 +390,7 @@ let cached = window.stash.getAll();
  * }
  */
 
-let cached = window.stash.getAll(true);
+let cached = Stash.getAll(true);
 /**
  * Result: (object)
  * { 
@@ -441,7 +441,7 @@ let cached = window.stash.getAll(true);
 
 &nbsp;
 
-## window.stash.getElse(key, callback, full)
+## Stash.getElse(key, callback, full)
 The getElse function works like the get function when retrieving a value from the cache, but if the key does not exist (or expired) then call a callback function to return an alternate value.
 
 - @param {string} **key** - the unique key for this entry in the cache.
@@ -454,7 +454,7 @@ The getElse function works like the get function when retrieving a value from th
     - **seconds** - the seconds value from when the cached item was stored. Default: 'no-expire'
     - **refresh** - the refresh function. Default: false
 
-Note: The key is passed to your callback function. You could then set the value in the cache again by using window.stash.set().
+Note: The key is passed to your callback function. You could then set the value in the cache again by using Stash.set().
 
 Note: getElse returns a promise, so the function needs to be called within an asynchronous function using 'await' in order to return the actual value and not another promise.
 ```js
@@ -463,7 +463,7 @@ Note: getElse returns a promise, so the function needs to be called within an as
  * exist, then return the value of the callback function.
  */
 (async () => {
-    var newValue = await window.stash.getElse('user-name', (key) => {
+    var newValue = await Stash.getElse('user-name', (key) => {
         return fetch("/some/api/you/have/setup")
         .then(res => { return res.json() })
         .then(data => { return data.username });
@@ -475,7 +475,7 @@ Note: getElse returns a promise, so the function needs to be called within an as
 /* OR */
 
 const someFunction = async () => {
-    var newValue = await window.stash.getElse('user-name', (key) => {
+    var newValue = await Stash.getElse('user-name', (key) => {
         return fetch("/some/api/you/have/setup")
         .then(res => { return res.json() })
         .then(data => { return data.username });
@@ -488,18 +488,18 @@ someFunction();
 
 &nbsp;
 
-## window.stash.clear(key)
+## Stash.clear(key)
 Remove an entry from the cache by key.
 
 - @param {string} **key** - the unique key for this entry in the cache.
 ```js
-window.stash.clear('your-key');
+Stash.clear('your-key');
 ```
 
 &nbsp;
 
-## window.stash.clearAll()
+## Stash.clearAll()
 Remove all entries from the cache.
 ```js
-window.stash.clearAll();
+Stash.clearAll();
 ```
