@@ -141,6 +141,7 @@ class Stash {
                                 key : keyData[2],
                                 value : await existing.refresh(existing.refreshProps),
                                 seconds : existing.seconds,
+                                refreshProps : existing.refreshProps,
                                 refresh : existing.refresh
                             });
                         })();
@@ -165,7 +166,7 @@ class Stash {
                 value = value.substring(10, value.length-2);
                 return (0, eval)("("+value+")");
             }
-            if (value._state && value._state._typeOf && value._state._typeOf == 'subscribable') {
+            if (value !== null && value._state && value._state._typeOf && value._state._typeOf == 'subscribable') {
                 var reserved = value._state._reserved;
                 var callbacks = value._state._callbacks;
                 var newObject = {};

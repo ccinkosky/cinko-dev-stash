@@ -18,7 +18,7 @@ import Stash from '@cinko-dev/stash';
 ## CDN
 Add the `<script>` tag below to the `<head>` section of your website.
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@cinko-dev/stash@1.1.4/Stash.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@cinko-dev/stash@1.1.7/Stash.js"></script>
 ```
 
 &nbsp;
@@ -73,15 +73,16 @@ class Stock extends React.Component {
     render () {
         return (
             <>
-            <div style={{
-                color : '#888',
-                backgroundColor : '#FFF',
-                border : '2px solid #888',
-                borderRadius : '6px',
-                margin : '15px',
-                padding : '15px',
-                maxWidth : '200px'
-            }}>
+            <div 
+                style={{
+                    color : '#888',
+                    backgroundColor : '#FFF',
+                    border : '2px solid #888',
+                    borderRadius : '6px',
+                    margin : '15px',
+                    padding : '15px',
+                    maxWidth : '200px'
+                }}>
                 <div>{ this.state.name }</div>
                 <div style={{ fontSize : '18px' }}><b>{ this.state.symbol }</b></div>
                 <div style={{ fontSize : '24px' }}><b>{ this.state.price }</b></div>
@@ -140,7 +141,7 @@ class Stock extends React.Component {
         });
         Stash.set({
             key : stockKey,
-            value : data,
+            value : stock,
             seconds : 300,
             refreshProps : this.props.symbol,
             refresh : ((symbol) => {
@@ -165,15 +166,16 @@ class Stock extends React.Component {
     render () {
         return (
             <>
-            <div style={{
-                color : '#888',
-                backgroundColor : '#FFF',
-                border : '2px solid #888',
-                borderRadius : '6px',
-                margin : '15px',
-                padding : '15px',
-                maxWidth : '200px'
-            }}>
+            <div 
+                style={{
+                    color : '#888',
+                    backgroundColor : '#FFF',
+                    border : '2px solid #888',
+                    borderRadius : '6px',
+                    margin : '15px',
+                    padding : '15px',
+                    maxWidth : '200px'
+                }}>
                 <div>{ this.state.name }</div>
                 <div style={{ fontSize : '18px' }}><b>{ this.state.symbol }</b></div>
                 <div style={{ fontSize : '24px' }}><b>{ this.state.price }</b></div>
